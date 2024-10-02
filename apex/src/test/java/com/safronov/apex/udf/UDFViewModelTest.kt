@@ -70,7 +70,6 @@ class UDFViewModelTest {
         assertEquals(updatedState, viewModel.state.value)
     }
 
-
     @Test
     fun `executor processes command and changes state`() = runTest {
         val initialState = TestState()
