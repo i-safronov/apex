@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apex" />
-            <option value="$PROJECT_DIR$/apex/shared" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
