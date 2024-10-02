@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.safronov.apex.dispatchers.DispatchersList
+import com.safronov.apex.extension.list.pushBack
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.isActive
@@ -15,21 +16,29 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     private val dispatchers: DispatchersList = DispatchersList.Base(),
 ) : ViewModel() {
 
+    var state = mutableStateOf(initState)
+        private set
+
+    var events = mutableStateOf<List<EV>>(emptyList())
+        private set
+
     private val executors = Channel<EX>(capacity = capacity)
     private val effectors = Channel<EF>(capacity)
 
     private var proceedJob: Job
+    private var effectorJob: Job
 
     init {
         proceedJob = proceed()
+        effectorJob = effector()
     }
 
-    private fun channel(capacity: Int) = Channel<EF>(capacity = capacity)
-    var state = mutableStateOf(initState)
-        private set
+    fun dispatch(vararg ex: EX) {
+        ex.forEach { executors.trySend(it) }
+    }
 
-    fun dispatch(ex: EX) {
-        executors.trySend(ex)
+    fun sendEvent(vararg ev: EV) {
+        events.value = events.value.pushBack(ev)
     }
 
     private fun proceed() = viewModelScope.launch(dispatchers.ui()) {
@@ -40,7 +49,15 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
         }
     }
 
+    private fun effector() = viewModelScope.launch(dispatchers.io()) {
+        while (true) {
+            if (isActive) {
+                affect(effectors.receive())
+            }
+        }
+    }
+
     abstract suspend fun execute(ex: EX): S
-    abstract suspend fun affect(effect: EF): EX
+    abstract suspend fun affect(effect: EF)
 
 }
