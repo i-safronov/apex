@@ -60,4 +60,10 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     abstract suspend fun execute(ex: EX): S
     abstract suspend fun affect(effect: EF)
 
+    override fun onCleared() {
+        proceedJob.cancel()
+        effectorJob.cancel()
+        super.onCleared()
+    }
+
 }
