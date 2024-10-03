@@ -46,4 +46,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.kotlinx.coroutines.test)
     implementation(libs.hilt.android)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 }
