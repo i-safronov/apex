@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:allowBackup="true"
         android:name=".app.App"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Apexudf"
-        tools:targetApi="31" />
+        tools:targetApi="31">
+        <activity
+            android:name=".example.interesting_fact_about_number.ui.activity.MainActivity"
+            android:exported="false" />
+    </application>
 
 </manifest>

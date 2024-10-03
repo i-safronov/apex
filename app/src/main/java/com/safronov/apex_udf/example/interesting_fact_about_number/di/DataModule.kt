@@ -1,7 +1,6 @@
 package com.safronov.apex_udf.example.interesting_fact_about_number.di
 
 import android.content.Context
-import androidx.room.Dao
 import androidx.room.Room
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.db.FactAboutNumberDB
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.db.FactAboutNumberDao
