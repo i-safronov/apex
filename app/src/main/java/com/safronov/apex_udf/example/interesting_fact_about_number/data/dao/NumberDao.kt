@@ -7,7 +7,14 @@ import retrofit2.http.Path
 
 interface NumberDao {
 
-    @GET("http://numbersapi.com/{number}")
+    @GET("$API/{number}")
     fun getFactAboutNumber(@Path("number") number: Long): Response<FactAboutNumberDTO>
+
+    @GET("$API/random/math")
+    fun getFactAboutRandomNumber(): Response<FactAboutNumberDTO>
+
+    companion object {
+        private const val API = "http://numbersapi.com"
+    }
 
 }
