@@ -23,30 +23,48 @@ class NumberRepositoryImpl @Inject constructor(
 
     override fun getFactAboutNumber(getFactAboutNumberInput: GetFactAboutNumberInput): Flow<Response<Unit>> {
         return flow {
-            val result: retrofit2.Response<FactAboutNumberDTO> =
-                factAboutNumberService.getFactAboutNumber(number = getFactAboutNumberInput.number)
-            result.onlySuccess(
-                block = { it: FactAboutNumberDTO ->
-                    factAboutNumberDao.insertFactAboutNumber(
-                        fact = it.mapToEntity(inputNumber = getFactAboutNumberInput.number)
-                    )
-                    emit(
-                        Response.Success(
-                            data = Unit
-                        )
-                    )
-                },
-                scope = this@flow
-            )
+            factAboutNumberService.getFactAboutNumber(number = getFactAboutNumberInput.number)
+                .onlySuccess(
+                    block = { it: FactAboutNumberDTO ->
+                        extractFactAboutNumber(it, getFactAboutNumberInput)
+                    },
+                    scope = this@flow
+                )
         }
     }
 
-    override fun getFactAboutRandomNumber(): Flow<Response<FactAboutNumber>> {
-        TODO("Not yet implemented")
+    override fun getFactAboutRandomNumber(): Flow<Response<Unit>> {
+        return flow {
+            factAboutNumberService.getFactAboutRandomNumber()
+                .onlySuccess(
+                    block = { it: FactAboutNumberDTO ->
+                        extractFactAboutNumber(
+                            it = it, getFactAboutNumberInput = GetFactAboutNumberInput(
+                                number = it.number
+                            )
+                        )
+                    },
+                    scope = this@flow
+                )
+        }
     }
 
     override fun getCachedFacts(): Flow<Response<List<FactAboutNumber>>> {
         TODO("Not yet implemented")
+    }
+
+    private suspend fun FlowCollector<Response<Unit>>.extractFactAboutNumber(
+        it: FactAboutNumberDTO,
+        getFactAboutNumberInput: GetFactAboutNumberInput
+    ) {
+        factAboutNumberDao.insertFactAboutNumber(
+            fact = it.mapToEntity(inputNumber = getFactAboutNumberInput.number)
+        )
+        emit(
+            Response.Success(
+                data = Unit
+            )
+        )
     }
 
 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface NumberRepository {
 
     fun getFactAboutNumber(getFactAboutNumberInput: GetFactAboutNumberInput): Flow<Response<Unit>>
-    fun getFactAboutRandomNumber(): Flow<Response<FactAboutNumber>>
+    fun getFactAboutRandomNumber(): Flow<Response<Unit>>
     fun getCachedFacts(): Flow<Response<List<FactAboutNumber>>>
 
 }

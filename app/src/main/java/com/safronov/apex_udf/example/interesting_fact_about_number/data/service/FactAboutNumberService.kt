@@ -7,10 +7,10 @@ import retrofit2.http.Path
 
 interface FactAboutNumberService {
 
-    @GET("$API/{number}")
+    @GET("$API/{number}?json")
     fun getFactAboutNumber(@Path("number") number: Long): Response<FactAboutNumberDTO>
 
-    @GET("$API/random/math")
+    @GET("$API/random/math?json")
     fun getFactAboutRandomNumber(): Response<FactAboutNumberDTO>
 
     companion object {
