@@ -2,6 +2,8 @@ package com.safronov.apex_udf.example.interesting_fact_about_number.data.reposit
 
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.db.FactAboutNumberDao
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.model.output.FactAboutNumberDTO
+import com.safronov.apex_udf.example.interesting_fact_about_number.data.model.output.FactAboutNumberEntity
+import com.safronov.apex_udf.example.interesting_fact_about_number.data.model.output.mapToDomain
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.model.output.mapToEntity
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.response.onlySuccess
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.service.FactAboutNumberService
@@ -11,7 +13,9 @@ import com.safronov.apex_udf.example.interesting_fact_about_number.domain.reposi
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.response.Response
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,7 +26,7 @@ class NumberRepositoryImpl @Inject constructor(
 ) : NumberRepository {
 
     override fun getFactAboutNumber(getFactAboutNumberInput: GetFactAboutNumberInput): Flow<Response<Unit>> {
-        return flow {
+        return flow<Response<Unit>> {
             factAboutNumberService.getFactAboutNumber(number = getFactAboutNumberInput.number)
                 .onlySuccess(
                     block = { it: FactAboutNumberDTO ->
@@ -30,11 +34,11 @@ class NumberRepositoryImpl @Inject constructor(
                     },
                     scope = this@flow
                 )
-        }
+        }.catch { emit(Response.Error(error = it)) }
     }
 
     override fun getFactAboutRandomNumber(): Flow<Response<Unit>> {
-        return flow {
+        return flow<Response<Unit>> {
             factAboutNumberService.getFactAboutRandomNumber()
                 .onlySuccess(
                     block = { it: FactAboutNumberDTO ->
@@ -46,11 +50,15 @@ class NumberRepositoryImpl @Inject constructor(
                     },
                     scope = this@flow
                 )
-        }
+        }.catch { emit(Response.Error(error = it)) }
     }
 
     override fun getCachedFacts(): Flow<Response<List<FactAboutNumber>>> {
-        TODO("Not yet implemented")
+        return factAboutNumberDao.getCachedFacts()
+            .map { facts ->
+                Response.Success(facts.map { it.mapToDomain() }) as Response<List<FactAboutNumber>>
+            }
+            .catch { emit(Response.Error(error = it)) }
     }
 
     private suspend fun FlowCollector<Response<Unit>>.extractFactAboutNumber(
