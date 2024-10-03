@@ -9,5 +9,6 @@ interface NumberRepository {
 
     fun getFactAboutNumber(getFactAboutNumberInput: GetFactAboutNumberInput): Flow<Response<FactAboutNumber>>
     fun getFactAboutRandomNumber(): Flow<Response<FactAboutNumber>>
+    fun getCachedFacts(): Flow<Response<List<FactAboutNumber>>>
 
 }
