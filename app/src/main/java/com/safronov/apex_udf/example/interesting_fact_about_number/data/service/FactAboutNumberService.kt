@@ -7,14 +7,14 @@ import retrofit2.http.Path
 
 interface FactAboutNumberService {
 
-    @GET("$API/{number}?json")
+    @GET("/{number}?json")
     fun getFactAboutNumber(@Path("number") number: Long): Response<FactAboutNumberDTO>
 
-    @GET("$API/random/math?json")
+    @GET("/random/math?json")
     fun getFactAboutRandomNumber(): Response<FactAboutNumberDTO>
 
     companion object {
-        private const val API = "http://numbersapi.com"
+        const val BASE_URL = "http://numbersapi.com"
     }
 
 }
