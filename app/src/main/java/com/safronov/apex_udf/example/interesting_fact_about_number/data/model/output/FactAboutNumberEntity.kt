@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "facts_about_numbers")
 data class FactAboutNumberEntity(
-    @PrimaryKey val id: Int? = -1,
-    @ColumnInfo val text: String?,
+    @PrimaryKey(autoGenerate = true) val id: Int? = -1,
+    @ColumnInfo val fact: String?,
     @ColumnInfo val number: Long?
 )
