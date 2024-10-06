@@ -1,6 +1,7 @@
 [versions]
-agp = "8.6.0"
-hiltAndroid = "2.51"
+activityCompose = "1.9.2"
+agp = "8.6.1"
+hiltAndroid = "2.51.1"
 hiltAndroidGradlePlugin = "2.52"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -9,20 +10,26 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 kotlinxCoroutinesTest = "1.9.0-RC.2"
-lifecycleRuntimeCompose = "2.8.5"
+lifecycleRuntimeCompose = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
 material = "1.12.0"
-retrofit = "2.9.0"
+materialVersion = "1.7.3"
+retrofit = "2.11.0"
 roomCompiler = "2.6.1"
 activity = "1.9.2"
 constraintlayout = "2.1.4"
+ui = "1.7.3"
 
 [libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
+androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "ui" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
