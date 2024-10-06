@@ -6,6 +6,7 @@ import com.safronov.apex_udf.example.interesting_fact_about_number.data.db.FactA
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.db.FactAboutNumberDao
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.repository.NumberRepositoryImpl
 import com.safronov.apex_udf.example.interesting_fact_about_number.data.service.FactAboutNumberService
+import com.safronov.apex_udf.example.interesting_fact_about_number.domain.repository.NumberRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +24,7 @@ object DataModule {
     @Provides
     fun provideFactAboutNumberDB(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(
+    ): FactAboutNumberDB = Room.databaseBuilder(
         context = context,
         klass = FactAboutNumberDB::class.java,
         name = "fact_about_numbers.db"
@@ -33,11 +34,11 @@ object DataModule {
     @Singleton
     fun provideFactAboutNumberDao(
         factAboutNumberDB: FactAboutNumberDB
-    ) = factAboutNumberDB.factAboutNumberDao()
+    ): FactAboutNumberDao = factAboutNumberDB.factAboutNumberDao()
 
     @Provides
     @Singleton
-    fun provideFactAboutNumberSerivce() = Retrofit.Builder()
+    fun provideFactAboutNumberService(): FactAboutNumberService = Retrofit.Builder()
         .baseUrl(FactAboutNumberService.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -48,7 +49,7 @@ object DataModule {
     fun provideNumberRepository(
         factAboutNumberDao: FactAboutNumberDao,
         factAboutNumberService: FactAboutNumberService
-    ) = NumberRepositoryImpl(
+    ): NumberRepository = NumberRepositoryImpl(
         factAboutNumberService = factAboutNumberService,
         factAboutNumberDao = factAboutNumberDao
     )
