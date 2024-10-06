@@ -37,7 +37,7 @@ class UDFViewModelTest {
     fun `initial state is set correctly`() = runTest {
         val initialState = TestState()
         val viewModel = TestUDFViewModel(initialState)
-        assertEquals(initialState, viewModel.state.value)
+        assertEquals(initialState, viewModel.state)
     }
 
     @Test
@@ -67,7 +67,7 @@ class UDFViewModelTest {
         val viewModel = TestUDFViewModel(initialState, updatedState = updatedState)
         viewModel.dispatch(TestExecutor())
         advanceUntilIdle()
-        assertEquals(updatedState, viewModel.state.value)
+        assertEquals(updatedState, viewModel.state)
     }
 
     @Test
@@ -79,7 +79,7 @@ class UDFViewModelTest {
         viewModel.dispatch(TestExecutor())
         advanceUntilIdle()
 
-        assertEquals(updatedState, viewModel.state.value)
+        assertEquals(updatedState, viewModel.state)
     }
 
     @Test
@@ -108,7 +108,7 @@ class UDFViewModelTest {
         val viewModel = TestUDFViewModel(TestState())
         viewModel.dispatch(TestExecutor())
         advanceUntilIdle()
-        assertNotEquals(TestState(), viewModel.state.value)
+        assertNotEquals(TestState(), viewModel.state)
     }
 
 

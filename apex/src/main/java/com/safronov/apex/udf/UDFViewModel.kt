@@ -16,8 +16,8 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     private val dispatchers: DispatchersList = DispatchersList.Base(),
 ) : ViewModel() {
 
-    var state = mutableStateOf(initState)
-        private set
+    private var _state = mutableStateOf(initState)
+    val state get() = _state.value
 
     var events = mutableStateOf<List<EV>>(emptyList())
         private set
@@ -44,7 +44,7 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     private fun proceed() = viewModelScope.launch(dispatchers.ui()) {
         while (true) {
             if (isActive) {
-                state.value = execute(ex = executors.receive())
+                _state.value = execute(ex = executors.receive())
             }
         }
     }
