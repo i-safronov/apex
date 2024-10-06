@@ -9,14 +9,15 @@ object NumbersListContract {
         val isLoading: Boolean = false,
         val isObtainingFact: Boolean = false,
         val error: String? = null,
-        val inputError: String? = null
+        val inputError: String? = null,
+        val facts: List<FactAboutNumber> = emptyList()
     ): UDF.State
 
     sealed interface Executor: UDF.Executor {
         data object Init: Executor
         data class GetFactByNumber(val str: String): Executor
         data object GetFactByRandomNumber: Executor
-        data class AddFact(val factAboutNumber: FactAboutNumber): Executor
+        data class AddFacts(val factsAboutNumber: List<FactAboutNumber>): Executor
     }
 
     sealed interface Event: UDF.Event {
@@ -26,6 +27,7 @@ object NumbersListContract {
     sealed interface Effect: UDF.Effect {
         data class GetFactByNumber(val number: Long): Effect
         data object GetFactByRandomNumber: Effect
+        data object SubscribeOnNumbers: Effect
     }
 
 }
