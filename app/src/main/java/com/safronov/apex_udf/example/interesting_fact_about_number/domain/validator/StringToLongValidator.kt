@@ -9,6 +9,9 @@ class StringToLongValidator {
             input.isBlank() -> {
                 Response.Error(error = Exception("Input text cannot be empty"))
             }
+            input.first() == '0' -> {
+                Response.Error(error = Exception("Enter a valid number"))
+            }
             input.all { it.isDigit() } -> {
                 Response.Success(data = input.toLong())
             }
