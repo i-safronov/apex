@@ -19,4 +19,13 @@ object NumbersListContract {
         data class AddFact(val factAboutNumber: FactAboutNumber): Executor
     }
 
+    sealed interface Event: UDF.Event {
+        data object NavigateToFactDetails: Event
+    }
+
+    sealed interface Effect: UDF.Effect {
+        data class GetFactByNumber(val number: Long): Effect
+        data object GetFactByRandomNumber: Effect
+    }
+
 }
