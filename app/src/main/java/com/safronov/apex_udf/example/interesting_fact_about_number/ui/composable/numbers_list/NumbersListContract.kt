@@ -17,7 +17,8 @@ object NumbersListContract {
         data object Init: Executor
         data class GetFactByNumber(val str: String): Executor
         data object GetFactByRandomNumber: Executor
-        data class AddFacts(val factsAboutNumber: List<FactAboutNumber>): Executor
+        data class ReplaceFacts(val factsAboutNumber: List<FactAboutNumber>): Executor
+        data class Error(val throwable: Throwable): Executor
     }
 
     sealed interface Event: UDF.Event {

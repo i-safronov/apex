@@ -1,6 +1,7 @@
 package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.numbers_list
 
 import com.safronov.apex.udf.UDFViewModel
+import com.safronov.apex_udf.example.interesting_fact_about_number.domain.model.fact.input.GetFactAboutNumberInput
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.response.Response
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.use_case.GetCachedFactsUseCase
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.use_case.GetFactAboutNumberUseCase
@@ -30,11 +31,11 @@ class NumbersListViewModel @Inject constructor(
             )
         }
 
-        is Executor.AddFacts -> {
+        is Executor.ReplaceFacts -> {
             state.copy(
                 isLoading = false,
                 isObtainingFact = false,
-                facts = state.facts.plus(ex.factsAboutNumber)
+                facts = ex.factsAboutNumber
             )
         }
 
@@ -61,10 +62,60 @@ class NumbersListViewModel @Inject constructor(
                 isObtainingFact = true
             )
         }
+
+        is Executor.Error -> {
+            state.copy(
+                error = ex.throwable.message,
+                isLoading = false,
+                isObtainingFact = false
+            )
+        }
     }
 
-    override suspend fun affect(effect: Effect) {
-        TODO("Not yet implemented")
+    override suspend fun affect(effect: Effect) = when (effect) {
+        is Effect.GetFactByNumber -> {
+            getFactAboutNumberUseCase(
+                getFactAboutNumberInput = GetFactAboutNumberInput(number = effect.number)
+            ).collect {
+                when (it) {
+                    is Response.Success -> {}
+
+                    is Response.Error -> {
+                        dispatch(Executor.Error(throwable = it.error))
+                    }
+                }
+            }
+        }
+
+        Effect.GetFactByRandomNumber -> {
+            getFactAboutRandomNumberUseCase().collect {
+                when (it) {
+                    is Response.Success -> {}
+
+                    is Response.Error -> {
+                        dispatch(Executor.Error(throwable = it.error))
+                    }
+                }
+            }
+        }
+
+        Effect.SubscribeOnNumbers -> {
+            getCachedFactsUseCase().collect {
+                when (it) {
+                    is Response.Success -> {
+                        dispatch(
+                            Executor.ReplaceFacts(
+                                factsAboutNumber = it.data
+                            )
+                        )
+                    }
+
+                    is Response.Error -> {
+                        dispatch(Executor.Error(throwable = it.error))
+                    }
+                }
+            }
+        }
     }
 
 }
