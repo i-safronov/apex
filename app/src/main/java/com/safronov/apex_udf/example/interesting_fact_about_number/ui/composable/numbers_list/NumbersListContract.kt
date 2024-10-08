@@ -19,10 +19,11 @@ object NumbersListContract {
         data object GetFactByRandomNumber: Executor
         data class ReplaceFacts(val factsAboutNumber: List<FactAboutNumber>): Executor
         data class Error(val throwable: Throwable): Executor
+        data class OnFactClick(val factAboutNumber: FactAboutNumber): Executor
     }
 
     sealed interface Event: UDF.Event {
-        data object NavigateToFactDetails: Event
+        data class NavigateToFactDetails(val factAboutNumber: FactAboutNumber): Event
     }
 
     sealed interface Effect: UDF.Effect {

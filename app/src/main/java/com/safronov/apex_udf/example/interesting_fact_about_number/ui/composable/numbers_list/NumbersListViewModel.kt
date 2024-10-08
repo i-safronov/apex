@@ -70,6 +70,11 @@ class NumbersListViewModel @Inject constructor(
                 isObtainingFact = false
             )
         }
+
+        is Executor.OnFactClick -> {
+            sendEvent(Event.NavigateToFactDetails(factAboutNumber = ex.factAboutNumber))
+            state
+        }
     }
 
     override suspend fun affect(effect: Effect) = when (effect) {
