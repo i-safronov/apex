@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.tooling.preview.v105)
     implementation(libs.androidx.material)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(project(":apex"))
