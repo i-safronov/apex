@@ -20,11 +20,5 @@ class StringToLongValidator {
             }
         }
     }
-}
 
-
-fun main() {
-    for (i in 0 until 3_147_483_647) {
-        println("$i")
-    }
 }
