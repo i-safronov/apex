@@ -64,8 +64,10 @@ class NumbersListViewModel @Inject constructor(
         }
 
         is Executor.Error -> {
+            sendEvent(Event.ShowError(
+                error = ex.throwable.message ?: "Unknown error"
+            ))
             state.copy(
-                error = ex.throwable.message,
                 isLoading = false,
                 isObtainingFact = false
             )
