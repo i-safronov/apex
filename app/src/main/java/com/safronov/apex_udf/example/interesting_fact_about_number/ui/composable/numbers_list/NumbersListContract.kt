@@ -8,7 +8,6 @@ object NumbersListContract {
     data class State(
         val isLoading: Boolean = false,
         val isObtainingFact: Boolean = false,
-        val error: String? = null,
         val inputError: String? = null,
         val facts: List<FactAboutNumber> = emptyList(),
         val input: String = ""
@@ -27,6 +26,7 @@ object NumbersListContract {
 
     sealed interface Event: UDF.Event {
         data class NavigateToFactDetails(val factAboutNumber: FactAboutNumber): Event
+        data class ShowError(val error: String): Event
     }
 
     sealed interface Effect: UDF.Effect {
