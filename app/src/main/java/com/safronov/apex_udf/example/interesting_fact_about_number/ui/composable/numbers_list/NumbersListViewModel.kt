@@ -40,7 +40,7 @@ class NumbersListViewModel @Inject constructor(
         }
 
         is Executor.GetFactByNumber -> {
-            when (val validate = stringToLongValidator.validate(input = ex.str)) {
+            when (val validate = stringToLongValidator.validate(input = state.input.trim())) {
                 is Response.Success -> {
                     affect(Effect.GetFactByNumber(number = validate.data))
                     state.copy(
@@ -75,6 +75,18 @@ class NumbersListViewModel @Inject constructor(
             sendEvent(Event.NavigateToFactDetails(factAboutNumber = ex.factAboutNumber))
             state
         }
+
+        is Executor.InputChanged -> {
+            state.copy(
+                input = ex.input
+            )
+        }
+
+        Executor.ClearInput -> {
+            state.copy(
+                input = ""
+            )
+        }
     }
 
     override suspend fun affect(effect: Effect) = when (effect) {
@@ -83,7 +95,9 @@ class NumbersListViewModel @Inject constructor(
                 getFactAboutNumberInput = GetFactAboutNumberInput(number = effect.number)
             ).collect {
                 when (it) {
-                    is Response.Success -> {}
+                    is Response.Success -> {
+                        dispatch(Executor.ClearInput)
+                    }
 
                     is Response.Error -> {
                         dispatch(Executor.Error(throwable = it.error))
