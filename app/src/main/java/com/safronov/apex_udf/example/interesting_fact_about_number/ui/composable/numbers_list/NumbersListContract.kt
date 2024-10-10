@@ -10,16 +10,19 @@ object NumbersListContract {
         val isObtainingFact: Boolean = false,
         val error: String? = null,
         val inputError: String? = null,
-        val facts: List<FactAboutNumber> = emptyList()
+        val facts: List<FactAboutNumber> = emptyList(),
+        val input: String = ""
     ): UDF.State
 
     sealed interface Executor: UDF.Executor {
         data object Init: Executor
-        data class GetFactByNumber(val str: String): Executor
+        data object GetFactByNumber: Executor
         data object GetFactByRandomNumber: Executor
         data class ReplaceFacts(val factsAboutNumber: List<FactAboutNumber>): Executor
         data class Error(val throwable: Throwable): Executor
         data class OnFactClick(val factAboutNumber: FactAboutNumber): Executor
+        data object ClearInput: Executor
+        data class InputChanged(val input: String): Executor
     }
 
     sealed interface Event: UDF.Event {
