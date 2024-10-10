@@ -50,7 +50,8 @@ fun NumbersListScreen(
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp),
+                    .height(55.dp)
+                    .padding(2.dp),
                 value = state.input,
                 onValueChange = { dispatch(NumbersListContract.Executor.InputChanged(input = it)) },
                 placeholder = {
