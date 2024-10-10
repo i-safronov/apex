@@ -1,4 +1,6 @@
 plugins {
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 }
@@ -42,6 +44,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.hilt.android.v244)
+
+    kapt(libs.hilt.compiler.v244)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
