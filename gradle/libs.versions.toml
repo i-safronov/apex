@@ -1,12 +1,14 @@
 [versions]
-activityCompose = "1.9.2"
+activityCompose = "1.9.3"
 agp = "8.6.1"
+googleHiltAndroid = "2.44"
 hiltAndroid = "2.51.1"
 hiltAndroidGradlePlugin = "2.52"
-hiltAndroidGradlePluginVersion = "2.44"
-hiltAndroidVersion = "2.44"
-hiltCompiler = "2.44"
-hiltNavigationCompose = "1.0.0"
+hiltAndroidGradlePluginVersion = "2.52"
+hiltAndroidVersion = "2.51.1"
+hiltCompiler = "2.51.1"
+hiltCompilerVersion = "2.44"
+hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -17,15 +19,17 @@ kotlinxCoroutinesTest = "1.9.0-RC.2"
 lifecycleRuntimeCompose = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
 material = "1.12.0"
-materialVersion = "1.7.3"
-navigationCompose = "2.8.1"
+materialVersion = "1.7.4"
+navigationCompose = "2.8.3"
 retrofit = "2.11.0"
 roomCompiler = "2.6.1"
-activity = "1.9.2"
+activity = "1.9.3"
 constraintlayout = "2.1.4"
-ui = "1.7.3"
-uiTooling = "1.0.5"
-uiToolingPreview = "1.0.5"
+roomRuntime = "2.5.0"
+roomCompilerVersion = "2.5.0"
+ui = "1.7.4"
+uiTooling = "1.7.4"
+uiToolingPreview = "1.7.4"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -36,12 +40,17 @@ androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-view
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-compiler-v250 = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
+androidx-room-runtime-v250 = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "ui" }
 androidx-ui-tooling-preview-v105 = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+dagger-hilt-android-v244 = { module = "com.google.dagger:hilt-android", version.ref = "googleHiltAndroid" }
+dagger-hilt-compiler-v244 = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 hilt-android-gradle-plugin-v244 = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePluginVersion" }

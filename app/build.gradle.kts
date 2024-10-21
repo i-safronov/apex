@@ -28,19 +28,24 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
@@ -58,6 +63,13 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling)
+
+    implementation(libs.dagger.hilt.android.v244)
+    kapt(libs.dagger.hilt.compiler.v244)
+    implementation(libs.androidx.room.runtime.v250)
+    kapt(libs.androidx.room.compiler.v250)
+    implementation(libs.androidx.room.ktx)
+
     debugImplementation(libs.androidx.ui.tooling.preview.v105)
     implementation(libs.androidx.material)
     implementation(libs.androidx.ui.tooling.preview)

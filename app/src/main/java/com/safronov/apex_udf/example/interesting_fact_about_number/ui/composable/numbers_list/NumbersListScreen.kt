@@ -47,17 +47,24 @@ fun NumbersListScreen(
                     top = 8.dp
                 )
         ) {
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .padding(2.dp),
-                value = state.input,
-                onValueChange = { dispatch(NumbersListContract.Executor.InputChanged(input = it)) },
-                placeholder = {
-                    Text("Enter number")
+            Column {
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(55.dp)
+                        .padding(2.dp),
+                    value = state.input,
+                    onValueChange = { dispatch(NumbersListContract.Executor.InputChanged(input = it)) },
+                    isError = state.inputError != null,
+                    placeholder = {
+                        Text(text = "Enter number")
+                    }
+                )
+
+                if (state.inputError != null) {
+                    Text(text = state.inputError, color = Color.Red)
                 }
-            )
+            }
 
             Button(
                 modifier = Modifier.fillMaxWidth().padding(top = 6.dp),

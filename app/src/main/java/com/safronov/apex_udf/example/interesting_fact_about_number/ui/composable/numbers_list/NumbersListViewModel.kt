@@ -80,7 +80,8 @@ class NumbersListViewModel @Inject constructor(
 
         is Executor.InputChanged -> {
             state.copy(
-                input = ex.input
+                input = ex.input,
+                inputError = null
             )
         }
 

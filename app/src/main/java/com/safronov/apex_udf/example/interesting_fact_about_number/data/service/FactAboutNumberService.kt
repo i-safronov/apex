@@ -8,10 +8,10 @@ import retrofit2.http.Path
 interface FactAboutNumberService {
 
     @GET("/{number}?json")
-    fun getFactAboutNumber(@Path("number") number: Long): Response<FactAboutNumberDTO>
+    suspend fun getFactAboutNumber(@Path("number") number: Long): Response<FactAboutNumberDTO>
 
     @GET("/random/math?json")
-    fun getFactAboutRandomNumber(): Response<FactAboutNumberDTO>
+    suspend fun getFactAboutRandomNumber(): Response<FactAboutNumberDTO>
 
     companion object {
         const val BASE_URL = "http://numbersapi.com"
