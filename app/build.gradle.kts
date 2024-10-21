@@ -61,6 +61,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling.preview.v105)
     implementation(libs.androidx.material)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.navigation.compose)
     implementation(project(":apex"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -71,4 +72,5 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
+
 }

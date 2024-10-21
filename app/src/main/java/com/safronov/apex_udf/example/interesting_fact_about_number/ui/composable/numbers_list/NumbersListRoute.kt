@@ -3,10 +3,18 @@ package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composabl
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+
+class NumbersListRoute {
+    companion object {
+        val path = "numbers_list"
+    }
+}
 
 @Composable
-fun NumbersListRoute(
-    modifier: Modifier = Modifier
+fun NumbersListDestination(
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     val viewModel: NumbersListViewModel = hiltViewModel()
 

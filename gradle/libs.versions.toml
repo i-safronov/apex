@@ -18,6 +18,7 @@ lifecycleRuntimeCompose = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
 material = "1.12.0"
 materialVersion = "1.7.3"
+navigationCompose = "2.8.1"
 retrofit = "2.11.0"
 roomCompiler = "2.6.1"
 activity = "1.9.2"
@@ -33,6 +34,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
 androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
