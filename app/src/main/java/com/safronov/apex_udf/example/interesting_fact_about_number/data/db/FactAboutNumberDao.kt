@@ -12,7 +12,7 @@ interface FactAboutNumberDao {
     @Insert
     fun insertFactAboutNumber(fact: FactAboutNumberEntity)
 
-    @Query("SELECT * FROM facts_about_numbers")
+    @Query("SELECT * FROM facts_about_numbers ORDER BY uid DESC")
     fun getCachedFacts(): Flow<List<FactAboutNumberEntity>>
 
 }
