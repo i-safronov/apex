@@ -4,11 +4,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.safronov.apex.dispatchers.DispatchersList
-import com.safronov.apex.extension.list.pushBack
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+
+interface ExecutorScope<EF : UDF.Effect> {
+    fun sendEffect(ef: EF)
+}
+
+interface EffectorScope<EX : UDF.Executor> {
+    fun dispatch(vararg ex: EX)
+}
 
 abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, EV : UDF.Event>(
     initState: S,
@@ -22,7 +29,7 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     var events = mutableStateOf<List<EV>>(emptyList())
         private set
 
-    private val executors = Channel<EX>(capacity = capacity)
+    private val executors = Channel<EX>(capacity)
     private val effectors = Channel<EF>(capacity)
 
     private var proceedJob: Job
@@ -33,37 +40,49 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
         effectorJob = effector()
     }
 
-    fun dispatch(vararg ex: EX) {
-        ex.forEach { executors.trySend(it) }
-    }
-
     fun sendEvent(vararg ev: EV) {
-        events.value = events.value.pushBack(ev)
+        events.value += ev
     }
 
     private fun proceed() = viewModelScope.launch(dispatchers.ui()) {
         while (true) {
             if (isActive) {
-                _state.value = execute(ex = executors.receive())
+                _state.value = ExecutorScopeImpl().execute(executors.receive())
             }
         }
     }
 
     private fun effector() = viewModelScope.launch(dispatchers.io()) {
-        while (true) {
-            if (isActive) {
-                affect(effectors.receive())
+        while (isActive) {
+            val effect = effectors.receive()
+            launch(dispatchers.io()) {
+                EffectorScopeImpl().affect(effect)
             }
         }
     }
 
-    abstract suspend fun execute(ex: EX): S
-    abstract suspend fun affect(effect: EF)
+    fun dispatch(vararg ex: EX) {
+        ex.forEach { executors.trySend(it) }
+    }
+
+    private inner class ExecutorScopeImpl : ExecutorScope<EF> {
+        override fun sendEffect(ef: EF) {
+            effectors.trySend(ef)
+        }
+    }
+
+    private inner class EffectorScopeImpl : EffectorScope<EX> {
+        override fun dispatch(vararg ex: EX) {
+            ex.forEach { executors.trySend(it) }
+        }
+    }
+
+    protected abstract suspend fun ExecutorScope<EF>.execute(ex: EX): S
+    protected abstract suspend fun EffectorScope<EX>.affect(ef: EF)
 
     override fun onCleared() {
         proceedJob.cancel()
         effectorJob.cancel()
         super.onCleared()
     }
-
 }
