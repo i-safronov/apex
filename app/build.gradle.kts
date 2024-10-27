@@ -30,12 +30,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 
     composeOptions {
@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.room.runtime.v250)
     kapt(libs.androidx.room.compiler.v250)
     implementation(libs.androidx.room.ktx)
+    testImplementation(libs.mockito.kotlin)
 
     debugImplementation(libs.androidx.ui.tooling.preview.v105)
     implementation(libs.androidx.material)
