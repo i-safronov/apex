@@ -1,5 +1,7 @@
 package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.numbers_list
 
+import com.safronov.apex.udf.EffectorScope
+import com.safronov.apex.udf.ExecutorScope
 import com.safronov.apex.udf.UDFViewModel
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.model.fact.input.GetFactAboutNumberInput
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.response.Response
@@ -23,9 +25,13 @@ class NumbersListViewModel @Inject constructor(
 
     private val stringToLongValidator = StringToLongValidator()
 
-    override suspend fun execute(ex: Executor): State = when (ex) {
+    init {
+        dispatch(Executor.Init)
+    }
+
+    override suspend fun ExecutorScope<Effect>.execute(ex: Executor): State = when (ex) {
         Executor.Init -> {
-            affect(Effect.SubscribeOnNumbers)
+            sendEffect(Effect.SubscribeOnNumbers)
             state.copy(
                 isLoading = true
             )
@@ -42,7 +48,7 @@ class NumbersListViewModel @Inject constructor(
         is Executor.GetFactByNumber -> {
             when (val validate = stringToLongValidator.validate(input = state.input.trim())) {
                 is Response.Success -> {
-                    affect(Effect.GetFactByNumber(number = validate.data))
+                    sendEffect(Effect.GetFactByNumber(number = validate.data))
                     state.copy(
                         isObtainingFact = true
                     )
@@ -57,7 +63,7 @@ class NumbersListViewModel @Inject constructor(
         }
 
         Executor.GetFactByRandomNumber -> {
-            affect(Effect.GetFactByRandomNumber)
+            sendEffect(Effect.GetFactByRandomNumber)
             state.copy(
                 isObtainingFact = true
             )
@@ -92,10 +98,10 @@ class NumbersListViewModel @Inject constructor(
         }
     }
 
-    override suspend fun affect(effect: Effect) = when (effect) {
+    override suspend fun EffectorScope<Executor>.affect(ef: Effect) = when (ef) {
         is Effect.GetFactByNumber -> {
             getFactAboutNumberUseCase(
-                getFactAboutNumberInput = GetFactAboutNumberInput(number = effect.number)
+                getFactAboutNumberInput = GetFactAboutNumberInput(number = ef.number)
             ).collect {
                 when (it) {
                     is Response.Success -> {
@@ -141,3 +147,4 @@ class NumbersListViewModel @Inject constructor(
     }
 
 }
+
