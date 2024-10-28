@@ -9,4 +9,11 @@ class NumberDetailsContract {
         val description: String = ""
     ): UDF.State
 
+    sealed interface Executor: UDF.Executor {
+        data class SetProperties(
+            val number: String,
+            val description: String
+        ): Executor
+    }
+
 }
