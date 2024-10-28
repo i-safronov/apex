@@ -9,6 +9,10 @@ class NumberDetailsRoute {
     companion object {
         val path = "number_details"
     }
+
+    enum class Args {
+        NUMBER, DESCRIPTION
+    }
 }
 
 @Composable
