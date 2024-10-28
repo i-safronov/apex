@@ -65,7 +65,10 @@ fun Navigation(
             NumberDetailsDestination(
                 number = entry.arguments?.getString(NumberDetailsRoute.Args.NUMBER.name) ?: "",
                 description = entry.arguments?.getString(NumberDetailsRoute.Args.DESCRIPTION.name)
-                    ?: ""
+                    ?: "",
+                navigateUp = {
+                    navController.navigateUp()
+                }
             )
         }
     }

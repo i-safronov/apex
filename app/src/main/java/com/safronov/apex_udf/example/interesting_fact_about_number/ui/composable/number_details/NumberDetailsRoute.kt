@@ -24,7 +24,8 @@ class NumberDetailsRoute {
 fun NumberDetailsDestination(
     modifier: Modifier = Modifier,
     number: String,
-    description: String
+    description: String,
+    navigateUp: () -> Unit
 ) {
     val viewModel: NumberDetailsViewModel = hiltViewModel()
 
@@ -41,6 +42,7 @@ fun NumberDetailsDestination(
 
     NumberDetailsScreen(
         modifier = modifier,
+        navigateUp = navigateUp,
         state = viewModel.state
     )
 }

@@ -1,7 +1,7 @@
 package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -17,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +32,7 @@ import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable
 @Composable
 fun NumberDetailsScreen(
     modifier: Modifier = Modifier,
+    navigateUp: () -> Unit,
     state: State
 ) {
     Scaffold(
@@ -43,10 +46,18 @@ fun NumberDetailsScreen(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.arrrow_left),
-                    contentDescription = "Navigate Up"
-                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(size = 16.dp))
+                        .clickable(enabled = true, onClick = navigateUp)
+                        .padding(2.dp)
+                ) {
+                    Icon(
+                        modifier = Modifier,
+                        painter = painterResource(R.drawable.arrrow_left),
+                        contentDescription = "Navigate Up"
+                    )
+                }
 
                 Box(
                     modifier = Modifier
@@ -103,7 +114,8 @@ fun NumberDetailsPreview() {
                         "Etiam faucibus eget nulla id mattis. Aliquam nec condimentum magna. Phasellus tortor magna, bibendum non magna eu, viverra rutrum ex. Ut ut mattis lorem, id mattis neque. Donec iaculis lectus sed metus vestibulum facilisis. Ut sit amet fringilla elit. Sed finibus magna risus, id volutpat arcu sodales quis. Integer condimentum in dolor sit amet cursus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce molestie, erat id maximus lacinia, mauris ante scelerisque justo, sed iaculis eros odio non eros. In ornare odio in pulvinar ultricies. Aliquam in ex tincidunt, ornare diam sed, mattis erat. Proin ullamcorper, tortor non convallis commodo, nulla enim pretium lectus, eu fringilla lectus arcu ultricies nisi. Etiam nec erat ultrices, condimentum ex quis, finibus tortor. Nam sodales tempus velit vitae vestibulum.\n" +
                         "\n" +
                         "Curabitur aliquam nulla ut semper imperdiet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur nec dui nec mauris consequat luctus. Etiam vitae luctus eros, ut pellentesque sapien. Aenean et luctus justo, eu vehicula erat. In dapibus augue ac urna dictum, sed semper neque venenatis. Nullam massa est, venenatis tincidunt erat in, volutpat ultricies nisl. Sed eget ullamcorper tellus. Nulla leo tellus, laoreet in metus sit amet, aliquam ornare velit. Suspendisse potenti."
-            )
+            ),
+            navigateUp = {}
         )
     }
 }
