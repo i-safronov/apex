@@ -8,7 +8,7 @@ fun FactAboutNumberEntity.mapToDomain() = FactAboutNumber(
     fact = fact ?: ""
 )
 
-fun FactAboutNumberDTO.mapToEntity(inputNumber: Long) = FactAboutNumberEntity(
+fun FactAboutNumberDTO.mapToEntity(inputNumber: Long, fact: String) = FactAboutNumberEntity(
     fact = fact,
     number = inputNumber
 )

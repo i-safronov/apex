@@ -2,5 +2,5 @@ package com.safronov.apex_udf.example.interesting_fact_about_number.data.model.o
 
 data class FactAboutNumberDTO(
     val number: Long,
-    val fact: String
+    val text: String
 )

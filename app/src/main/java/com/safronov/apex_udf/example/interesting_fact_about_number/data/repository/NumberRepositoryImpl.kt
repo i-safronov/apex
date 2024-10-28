@@ -30,7 +30,11 @@ class NumberRepositoryImpl @Inject constructor(
             factAboutNumberService.getFactAboutNumber(number = getFactAboutNumberInput.number)
                 .onlySuccess(
                     block = { it: FactAboutNumberDTO ->
-                        extractFactAboutNumber(it, getFactAboutNumberInput)
+                        extractFactAboutNumber(
+                            it = it,
+                            getFactAboutNumberInput = getFactAboutNumberInput,
+                            fact = it.text
+                        )
                     },
                     scope = this@flow
                 )
@@ -45,7 +49,7 @@ class NumberRepositoryImpl @Inject constructor(
                         extractFactAboutNumber(
                             it = it, getFactAboutNumberInput = GetFactAboutNumberInput(
                                 number = it.number
-                            )
+                            ), fact = it.text
                         )
                     },
                     scope = this@flow
@@ -63,10 +67,11 @@ class NumberRepositoryImpl @Inject constructor(
 
     private suspend fun FlowCollector<Response<Unit>>.extractFactAboutNumber(
         it: FactAboutNumberDTO,
-        getFactAboutNumberInput: GetFactAboutNumberInput
+        getFactAboutNumberInput: GetFactAboutNumberInput,
+        fact: String
     ) {
         factAboutNumberDao.insertFactAboutNumber(
-            fact = it.mapToEntity(inputNumber = getFactAboutNumberInput.number)
+            fact = it.mapToEntity(inputNumber = getFactAboutNumberInput.number, fact = fact)
         )
         emit(
             Response.Success(
