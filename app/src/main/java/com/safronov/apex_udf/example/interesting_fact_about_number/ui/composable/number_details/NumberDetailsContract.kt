@@ -16,4 +16,8 @@ class NumberDetailsContract {
         ): Executor
     }
 
+    sealed interface Effect: UDF.Effect
+
+    sealed interface Event: UDF.Event
+
 }
