@@ -1,5 +1,6 @@
 package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

@@ -1,6 +1,7 @@
 package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.numbers_list.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,13 +23,15 @@ import androidx.compose.ui.unit.sp
 fun FactItem(
     modifier: Modifier = Modifier,
     number: String,
-    text: String
+    text: String,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = modifier
             .padding(
                 top = 8.dp,
             )
+            .clickable(enabled = true, onClick = onClick)
     ) {
         Box(
             modifier = Modifier
@@ -79,7 +82,8 @@ fun FactItemPreview() {
             items(100) {
                 FactItem(
                     number = "$it",
-                    text = "Some interesting fact about number"
+                    text = "Some interesting fact about number",
+                    onClick = {}
                 )
             }
         }

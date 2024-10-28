@@ -3,7 +3,6 @@ package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composabl
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsRoute
 
 class NumbersListRoute {
@@ -23,6 +22,7 @@ fun NumbersListDestination(
         modifier = modifier,
         state = viewModel.state,
         navigateToNumberDetails = navigateToNumberDetails,
+        events = viewModel.events,
         dispatch = {
             viewModel.dispatch(it)
         }

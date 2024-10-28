@@ -1,6 +1,8 @@
 package com.safronov.apex.shared
 
 import com.safronov.apex.dispatchers.DispatchersList
+import com.safronov.apex.udf.EffectorScope
+import com.safronov.apex.udf.ExecutorScope
 import com.safronov.apex.udf.UDF
 import com.safronov.apex.udf.UDFViewModel
 
@@ -22,19 +24,19 @@ internal class TestUDFViewModel(
     var isProceedJobCancelled = false
     var isEffectorJobCancelled = false
 
-    override suspend fun execute(ex: TestExecutor): TestState {
-        return updatedState
-    }
-
-    override suspend fun affect(effect: TestEffect) {
-        effectProcessed = true
-        effectHandled = true
-        this.effect = effect
-    }
-
     fun clearViewModel() {
         isProceedJobCancelled = true
         isEffectorJobCancelled = true
         onCleared()
+    }
+
+    override suspend fun ExecutorScope<TestEffect>.execute(ex: TestExecutor): TestState {
+        return updatedState
+    }
+
+    override suspend fun EffectorScope<TestExecutor>.affect(ef: TestEffect) {
+        effectProcessed = true
+        effectHandled = true
+        effect = ef
     }
 }

@@ -1,9 +1,11 @@
 package com.safronov.apex.udf
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.safronov.apex.dispatchers.DispatchersList
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.isActive
@@ -17,6 +19,18 @@ interface EffectorScope<EX : UDF.Executor> {
     fun dispatch(vararg ex: EX)
 }
 
+inline fun <EV: UDF.Event> Channel<EV>.onEvent(
+    crossinline block: (EV) -> Unit,
+    scope: CoroutineScope = CoroutineScope(Job()),
+    dispatchers: DispatchersList = DispatchersList.Base()
+) = scope.launch(dispatchers.ui()) {
+    while (true) {
+        if (isActive) {
+            block(receive())
+        }
+    }
+}
+
 abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, EV : UDF.Event>(
     initState: S,
     capacity: Int = 3,
@@ -26,7 +40,7 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     private var _state = mutableStateOf(initState)
     val state get() = _state.value
 
-    var events = mutableStateOf<List<EV>>(emptyList())
+    var events = Channel<EV>(capacity)
         private set
 
     private val executors = Channel<EX>(capacity)
@@ -41,7 +55,7 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     }
 
     fun sendEvent(vararg ev: EV) {
-        events.value += ev
+        ev.forEach { events.trySend(it) }
     }
 
     private fun proceed() = viewModelScope.launch(dispatchers.ui()) {

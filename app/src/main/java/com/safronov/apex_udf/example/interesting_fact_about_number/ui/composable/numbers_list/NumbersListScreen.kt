@@ -12,93 +12,144 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.safronov.apex.udf.onEvent
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.model.fact.output.FactAboutNumber
 import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsRoute
 import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.numbers_list.components.FactItem
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 
 @Composable
 fun NumbersListScreen(
     modifier: Modifier = Modifier,
     state: NumbersListContract.State,
+    events: Channel<NumbersListContract.Event>,
     navigateToNumberDetails: (NumberDetailsRoute.Arg) -> Unit,
     dispatch: (NumbersListContract.Executor) -> Unit
 ) {
     val factsState = rememberLazyListState()
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (state.isLoading || state.isObtainingFact) {
-            LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        Column(
-            modifier = Modifier
-                .padding(
-                    start = 8.dp,
-                    end = 8.dp,
-                    top = 8.dp
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    events.onEvent(block = {
+        when (it) {
+            is NumbersListContract.Event.NavigateToFactDetails -> {
+                navigateToNumberDetails(
+                    NumberDetailsRoute.Arg(
+                        number = it.factAboutNumber.number.toString(),
+                        description = it.factAboutNumber.fact
+                    )
                 )
+            }
+
+            is NumbersListContract.Event.ShowError -> {
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = it.error,
+                        duration = SnackbarDuration.Long
+                    )
+                }
+            }
+        }
+    }, scope = scope)
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) {
+        Column(
+            modifier = modifier
+                .padding(it),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column {
-                TextField(
+            if (state.isLoading || state.isObtainingFact) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 8.dp
+                    )
+            ) {
+                Column {
+                    TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(55.dp)
+                            .padding(2.dp),
+                        value = state.input,
+                        onValueChange = { dispatch(NumbersListContract.Executor.InputChanged(input = it)) },
+                        isError = state.inputError != null,
+                        placeholder = {
+                            Text(text = "Enter number")
+                        }
+                    )
+
+                    if (state.inputError != null) {
+                        Text(text = state.inputError, color = Color.Red)
+                    }
+                }
+
+                Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(55.dp)
-                        .padding(2.dp),
-                    value = state.input,
-                    onValueChange = { dispatch(NumbersListContract.Executor.InputChanged(input = it)) },
-                    isError = state.inputError != null,
-                    placeholder = {
-                        Text(text = "Enter number")
-                    }
-                )
+                        .padding(top = 6.dp),
+                    onClick = {
+                        dispatch(NumbersListContract.Executor.GetFactByNumber)
+                    },
+                    enabled = !state.isLoading && !state.isObtainingFact
+                ) {
+                    Text("Get fact")
+                }
 
-                if (state.inputError != null) {
-                    Text(text = state.inputError, color = Color.Red)
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        dispatch(NumbersListContract.Executor.GetFactByRandomNumber)
+                    },
+                    enabled = !state.isLoading && !state.isObtainingFact
+                ) {
+                    Text("Get fact about random number")
                 }
             }
 
-            Button(
-                modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
-                onClick = {
-                    dispatch(NumbersListContract.Executor.GetFactByNumber)
-                },
-                enabled = !state.isLoading && !state.isObtainingFact
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                state = factsState
             ) {
-                Text("Get fact")
-            }
-
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    dispatch(NumbersListContract.Executor.GetFactByRandomNumber)
-                },
-                enabled = !state.isLoading && !state.isObtainingFact
-            ) {
-                Text("Get fact about random number")
-            }
-        }
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
-            state = factsState
-        ) {
-            items(state.facts) { fact ->
-                FactItem(
-                    number = fact.number.toString(),
-                    text = fact.fact
-                )
+                items(state.facts) { fact ->
+                    FactItem(
+                        number = fact.number.toString(),
+                        text = fact.fact,
+                        onClick = {
+                            dispatch(NumbersListContract.Executor.OnFactClick(
+                                factAboutNumber = FactAboutNumber(
+                                    id = fact.id,
+                                    number = fact.number,
+                                    fact = fact.fact
+                                )
+                            ))
+                        }
+                    )
+                }
             }
         }
     }
@@ -132,7 +183,8 @@ fun NumbersListScreenPreview() {
             },
             navigateToNumberDetails = {
 
-            }
+            },
+            events = Channel()
         )
     }
 }
