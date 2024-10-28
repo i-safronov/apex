@@ -13,6 +13,11 @@ class NumberDetailsRoute {
     enum class Args {
         NUMBER, DESCRIPTION
     }
+
+    data class Arg(
+        val number: String,
+        val description: String
+    )
 }
 
 @Composable

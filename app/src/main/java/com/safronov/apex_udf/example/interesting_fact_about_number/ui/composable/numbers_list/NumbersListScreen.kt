@@ -21,12 +21,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.safronov.apex_udf.example.interesting_fact_about_number.domain.model.fact.output.FactAboutNumber
+import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsRoute
 import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.numbers_list.components.FactItem
 
 @Composable
 fun NumbersListScreen(
     modifier: Modifier = Modifier,
     state: NumbersListContract.State,
+    navigateToNumberDetails: (NumberDetailsRoute.Arg) -> Unit,
     dispatch: (NumbersListContract.Executor) -> Unit
 ) {
     val factsState = rememberLazyListState()
@@ -126,6 +128,9 @@ fun NumbersListScreenPreview() {
                 isObtainingFact = true
             ),
             dispatch = {
+
+            },
+            navigateToNumberDetails = {
 
             }
         )

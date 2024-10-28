@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsRoute
 
 class NumbersListRoute {
     companion object {
@@ -14,13 +15,14 @@ class NumbersListRoute {
 @Composable
 fun NumbersListDestination(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navigateToNumberDetails: (NumberDetailsRoute.Arg) -> Unit,
 ) {
     val viewModel: NumbersListViewModel = hiltViewModel()
 
     NumbersListScreen(
         modifier = modifier,
         state = viewModel.state,
+        navigateToNumberDetails = navigateToNumberDetails,
         dispatch = {
             viewModel.dispatch(it)
         }

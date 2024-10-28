@@ -12,6 +12,13 @@ import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable
 import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.numbers_list.NumbersListDestination
 import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.numbers_list.NumbersListRoute
 
+fun withArgs(route: String, vararg args: String): String {
+    return buildString {
+        append(route)
+        args.forEach { arg -> append("/$arg") }
+    }
+}
+
 @Composable
 fun Navigation(
     modifier: Modifier = Modifier
@@ -26,12 +33,19 @@ fun Navigation(
             route = NumbersListRoute.path
         ) {
             NumbersListDestination(
-                navController = navController
+                navigateToNumberDetails = { args ->
+                    navController.navigate(
+                        withArgs(
+                            route = NumberDetailsRoute.path,
+                            args = arrayOf(args.number, args.description)
+                        )
+                    )
+                }
             )
         }
 
         composable(
-            route = NumberDetailsRoute.path,
+            route = "${NumberDetailsRoute.path}/{${NumberDetailsRoute.Args.NUMBER.name}}/{${NumberDetailsRoute.Args.DESCRIPTION.name}}",
             arguments = listOf(
                 navArgument(name = NumberDetailsRoute.Args.NUMBER.name) {
                     type = NavType.StringType
@@ -50,7 +64,8 @@ fun Navigation(
         ) { entry ->
             NumberDetailsDestination(
                 number = entry.arguments?.getString(NumberDetailsRoute.Args.NUMBER.name) ?: "",
-                description = entry.arguments?.getString(NumberDetailsRoute.Args.DESCRIPTION.name) ?: ""
+                description = entry.arguments?.getString(NumberDetailsRoute.Args.DESCRIPTION.name)
+                    ?: ""
             )
         }
     }
