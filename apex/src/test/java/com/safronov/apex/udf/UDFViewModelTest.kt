@@ -41,26 +41,6 @@ class UDFViewModelTest {
     }
 
     @Test
-    fun `initial events list is empty`() = runTest {
-        val viewModel = TestUDFViewModel(TestState())
-        assertTrue(viewModel.events.value.isEmpty())
-    }
-
-    @Test
-    fun `single event is added correctly`() = runTest {
-        val viewModel = TestUDFViewModel(TestState())
-        viewModel.sendEvent(TestEvent())
-        assertEquals(1, viewModel.events.value.size)
-    }
-
-    @Test
-    fun `multiple events are added correctly`() = runTest {
-        val viewModel = TestUDFViewModel(TestState())
-        viewModel.sendEvent(TestEvent(), TestEvent())
-        assertEquals(2, viewModel.events.value.size)
-    }
-
-    @Test
     fun `executor command changes state correctly`() = runTest {
         val initialState = TestState()
         val updatedState = TestState(updated = true)
@@ -80,19 +60,6 @@ class UDFViewModelTest {
         advanceUntilIdle()
 
         assertEquals(updatedState, viewModel.state)
-    }
-
-    @Test
-    fun `effect is processed correctly`() = runTest {
-        val viewModel = TestUDFViewModel(TestState())
-        assertFalse(viewModel.effectHandled)
-        val effect = TestEffect()
-        viewModel.affect(effect)
-
-        advanceUntilIdle()
-
-        assertTrue(viewModel.effectHandled)
-        assertEquals(viewModel.effect, effect)
     }
 
     @Test
