@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.safronov.apex_udf"
+    namespace = "com.safronov.apex"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.safronov.apex_udf"
+        applicationId = "com.safronov.apex"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "apex-udf"
+rootProject.name = "apex"
 include(":app")
 include(":apex")
