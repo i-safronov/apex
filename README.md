@@ -1,6 +1,11 @@
 <h1 align="center">Apex welcomes you</h1>
 <h6 align="center">A library that fundamentally changes the way Android applications are developed ⚔🔥</h6>
 
+### Connecting the library using build.gradle.kts
+```Kotlin
+    implementation("com.safronov.apex.architecture:1.0.0")
+```
+
 <img src="https://github.com/user-attachments/assets/50dcb456-31ab-44ab-a51a-12ffa5d5d39a" alt="apex-logo" style="width: 100%;">
 
 ### Description of the architecture
