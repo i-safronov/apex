@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("maven-publish")
 }
 
 android {
@@ -33,6 +34,29 @@ android {
         jvmTarget = "1.8"
     }
 
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "com.safronov.apex"
+            artifactId = "architecture"
+            version = "1.0.0"
+
+            artifact("$buildDir/outputs/aar/apex-release.aar")
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/i-safronov/apex")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("gpr.user")
+                password = project.findProperty("gpr.token") as String? ?: System.getenv("gpr.token")
+            }
+        }
+    }
 }
 
 dependencies {
