@@ -11,15 +11,16 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-interface ExecutorScope<EF : UDF.Effect> {
+interface ExecutorScope<EF : UDF.Effect, EV: UDF.Event> {
     fun sendEffect(ef: EF)
+    fun sendEvent(event: EV)
 }
 
 interface EffectorScope<EX : UDF.Executor> {
     fun dispatch(vararg ex: EX)
 }
 
-inline fun <EV: UDF.Event> Channel<EV>.onEvent(
+inline fun <EV : UDF.Event> Channel<EV>.onEvent(
     crossinline block: (EV) -> Unit,
     scope: CoroutineScope = CoroutineScope(Job()),
     dispatchers: DispatchersList = DispatchersList.Base()
@@ -40,9 +41,7 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     private var _state = mutableStateOf(initState)
     val state get() = _state.value
 
-    var events = Channel<EV>(capacity)
-        private set
-
+    val events = Channel<EV>(capacity)
     private val executors = Channel<EX>(capacity)
     private val effectors = Channel<EF>(capacity)
 
@@ -52,10 +51,6 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
     init {
         proceedJob = proceed()
         effectorJob = effector()
-    }
-
-    fun sendEvent(vararg ev: EV) {
-        ev.forEach { events.trySend(it) }
     }
 
     private fun proceed() = viewModelScope.launch(dispatchers.ui()) {
@@ -79,9 +74,13 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
         ex.forEach { executors.trySend(it) }
     }
 
-    private inner class ExecutorScopeImpl : ExecutorScope<EF> {
+    private inner class ExecutorScopeImpl : ExecutorScope<EF, EV> {
         override fun sendEffect(ef: EF) {
             effectors.trySend(ef)
+        }
+
+        override fun sendEvent(event: EV) {
+            events.trySend(event)
         }
     }
 
@@ -91,7 +90,8 @@ abstract class UDFViewModel<S : UDF.State, EX : UDF.Executor, EF : UDF.Effect, E
         }
     }
 
-    protected abstract suspend fun ExecutorScope<EF>.execute(ex: EX): S
+    protected abstract suspend fun ExecutorScope<EF, EV>.execute(ex: EX): S
+
     protected abstract suspend fun EffectorScope<EX>.affect(ef: EF)
 
     override fun onCleared() {

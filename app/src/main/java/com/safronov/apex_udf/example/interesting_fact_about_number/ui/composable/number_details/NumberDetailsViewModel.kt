@@ -3,7 +3,10 @@ package com.safronov.apex_udf.example.interesting_fact_about_number.ui.composabl
 import com.safronov.apex.udf.EffectorScope
 import com.safronov.apex.udf.ExecutorScope
 import com.safronov.apex.udf.UDFViewModel
-import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsContract.*
+import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsContract.Effect
+import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsContract.Event
+import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsContract.Executor
+import com.safronov.apex_udf.example.interesting_fact_about_number.ui.composable.number_details.NumberDetailsContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,7 +15,7 @@ class NumberDetailsViewModel @Inject constructor() : UDFViewModel<State, Executo
     initState = State()
 ) {
 
-    override suspend fun ExecutorScope<Effect>.execute(ex: Executor): State = when (ex) {
+    override suspend fun ExecutorScope<Effect, Event>.execute(ex: Executor): State = when (ex) {
         is Executor.SetProperties -> {
             state.copy(
                 number = ex.number,

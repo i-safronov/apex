@@ -76,7 +76,7 @@ class NumbersListViewModelTest {
 
     @Test
     fun `Executor GetFactByNumber should set obtaining fact to true`() {
-        Mockito.`when`(getFactAboutNumberUseCase.invoke(any())).thenReturn(
+        val thenReturn = `when`(getFactAboutNumberUseCase.invoke(any())).thenReturn(
             flow { emit(Response.Success(data = Unit)) }
         )
         val validInput = "42"
@@ -109,7 +109,6 @@ class NumbersListViewModelTest {
         vm.dispatch(NumbersListContract.Executor.Error(throwable))
 
         assertEquals(false, vm.state.isLoading)
-        // Здесь можно проверить, что состояние обновилось с ошибкой
     }
 
     @Test
@@ -117,7 +116,6 @@ class NumbersListViewModelTest {
         val fact = FactAboutNumber(1, number = 1, fact = "Fact 1")
         vm.dispatch(NumbersListContract.Executor.OnFactClick(fact))
 
-        // Проверьте, что событие навигации было отправлено
     }
 
     @Test

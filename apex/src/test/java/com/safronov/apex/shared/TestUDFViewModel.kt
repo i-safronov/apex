@@ -30,7 +30,7 @@ internal class TestUDFViewModel(
         onCleared()
     }
 
-    override suspend fun ExecutorScope<TestEffect>.execute(ex: TestExecutor): TestState {
+    override suspend fun ExecutorScope<TestEffect, TestEvent>.execute(ex: TestExecutor): TestState {
         return updatedState
     }
 

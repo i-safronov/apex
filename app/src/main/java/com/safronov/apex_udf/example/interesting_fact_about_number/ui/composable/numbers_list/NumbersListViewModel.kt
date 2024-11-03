@@ -29,7 +29,7 @@ class NumbersListViewModel @Inject constructor(
         dispatch(Executor.Init)
     }
 
-    override suspend fun ExecutorScope<Effect>.execute(ex: Executor): State = when (ex) {
+    override suspend fun ExecutorScope<Effect, Event>.execute(ex: Executor): State = when (ex) {
         Executor.Init -> {
             sendEffect(Effect.SubscribeOnNumbers)
             state.copy(

@@ -1,7 +1,5 @@
 package com.safronov.apex.udf
 
-import com.safronov.apex.shared.TestEffect
-import com.safronov.apex.shared.TestEvent
 import com.safronov.apex.shared.TestExecutor
 import com.safronov.apex.shared.TestState
 import com.safronov.apex.shared.TestUDFViewModel
@@ -13,7 +11,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
