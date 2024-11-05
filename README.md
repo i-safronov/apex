@@ -12,7 +12,7 @@
 ```
 
 
-<img src="[https://github.com/user-attachments/assets/f0aefb60-a32c-4b80-a8bb-c9aec0d85f64](https://github.com/user-attachments/assets/f0aefb60-a32c-4b80-a8bb-c9aec0d85f64)" alt="apex-logo" style="width: 100%;">
+<img src="https://github.com/user-attachments/assets/f0aefb60-a32c-4b80-a8bb-c9aec0d85f64" alt="apex-logo" style="width: 100%;">
 
 ### Description of the architecture
 
