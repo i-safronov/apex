@@ -6,7 +6,7 @@
 
 
 ```kotlin
-    implementation("com.safronov.apex.architecture:1.0.0")
+    implementation("com.safronov.apex.architecture:1.0.2")
 ```
 
 
