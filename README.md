@@ -1,7 +1,5 @@
 <h1 align="center">Apex welcomes you</h1>
-
-
-#### A library that fundamentally changes the way Android applications are developed ⚔🔥
+<h6 align="center">A library that fundamentally changes the way Android applications are developed ⚔🔥</h6>
 
 
 ### Connecting the library using build.gradle.kts
