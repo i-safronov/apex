@@ -1,4 +1,4 @@
-# Apex welcomes you
+<h1 align="center">Apex welcomes you</h1>
 
 
 #### A library that fundamentally changes the way Android applications are developed ⚔🔥
