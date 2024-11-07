@@ -32,7 +32,7 @@ dependencyResolutionManagement {
 
 <img src="https://github.com/user-attachments/assets/f0aefb60-a32c-4b80-a8bb-c9aec0d85f64" alt="apex-logo" style="width: 100%;">
 
-The diagram presents the architecture of the interaction between the user interface (UI) and the ViewModel, which helps structure data processing and state management within the application. The central component in this system is the State — an object that holds data and the current UI state, dynamically changing based on user actions and the app's internal logic. State allows control over which data is displayed on the screen and in what form, ensuring synchronization with the user interface. The UI layer monitors State changes and updates interface components so that displayed information remains current and consistent with the data.
+The `diagram` presents the architecture of the interaction between the user interface (UI) and the ViewModel, which helps structure data processing and state management within the application. The central component in this system is the State — an object that holds data and the current UI state, dynamically changing based on user actions and the app's internal logic. State allows control over which data is displayed on the screen and in what form, ensuring synchronization with the user interface. The UI layer monitors State changes and updates interface components so that displayed information remains current and consistent with the data.
 
 When a user interacts with the interface, for example by pressing a button, the UI layer sends an EX (Execute Command), which is intercepted by the Executor component. This component plays a key role in the architecture, as it is responsible for executing logic, updating the State, and processing commands. The Executor operates in the UI thread, so its tasks are limited to lightweight operations such as updating data or toggling element states. This approach supports a high responsiveness in the interface, avoiding blocks and delays.
 
@@ -43,3 +43,10 @@ Effect is a mechanism for carrying out complex or long-term operations that go b
 Event represents messages sent to the UI layer, intended to trigger specific actions in the interface, such as displaying notifications, opening dialogs, or showing pop-ups. Event is used to send immediate instructions from the Executor that require a visual response in the interface. Unlike State, which is persistently tracked, an Event is a one-time signal that is not retained. For instance, upon operation completion, the Executor can send an Event prompting the UI to display a success message or show an error if something went wrong.
 
 This architecture enables the separation of data and event handling logic from the user interface, making the code more structured, modular, and easier to test. Each element fulfills a clearly defined role: State stores data and state, Executor executes simple logic and is responsible for updating State, Effect delegates long-running processes, and Event manages the UI's response to events.
+
+### How to use the library?
+- An example of using the library can be found in the educational project, which is located at the link: [https://github.com/i-safronov/apex](https://github.com/i-safronov/apex/tree/main/app)
+- But if you want to study the work of the library in more detail, then I invite you to my post in Habr: 
+
+### Done! 😎
+On this page you got acquainted with my architecture **Apex**, which I sincerely believe in and am confident that it will gain its popularity, and in this you can take a direct part by starting to use it and recommend it to colleagues and remember, everything is possible if you believe it❤️
