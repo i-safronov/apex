@@ -46,7 +46,7 @@ This architecture enables the separation of data and event handling logic from t
 
 ### How to use the library?
 - An example of using the library can be found in the educational project, which is located at the link: [https://github.com/i-safronov/apex](https://github.com/i-safronov/apex/tree/main/app)
-- But if you want to study the work of the library in more detail, then I invite you to my post in Habr: 
+- But if you want to study the work of the library in more detail, then I invite you to my post in Habr: https://habr.com/ru/articles/857332/
 
 ### Done! 😎
 On this page you got acquainted with my architecture **Apex**, which I sincerely believe in and am confident that it will gain its popularity, and in this you can take a direct part by starting to use it and recommend it to colleagues and remember, everything is possible if you believe it❤️
